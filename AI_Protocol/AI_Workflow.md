@@ -1,140 +1,152 @@
-# AI Workflow - Proyecto de Automatizacion QA API REST con Karate DSL
+# AI Workflow - Proyecto QA Automation REST Demoblaze con Karate DSL
 
 ## 1. Introduccion
 
 ### Objetivo del proyecto
-Establecer un framework de automatizacion de pruebas para servicios REST que permita validar de forma continua la calidad funcional y contractual de la API objetivo, reduciendo defectos en integracion y mejorando el tiempo de retroalimentacion al equipo de desarrollo.
+Definir y ejecutar un flujo de automatizacion QA para los servicios REST de autenticacion de Demoblaze, con foco en estabilidad funcional, deteccion temprana de defectos y evidencia de calidad reutilizable en ciclos de integracion continua.
 
 ### Alcance
-Este workflow aplica al proyecto actual de pruebas API con Karate para los dominios funcionales de cuenta y productos, incluyendo los endpoints:
-- `POST /api/createAccount`
-- `PUT /api/updateAccount`
-- `DELETE /api/deleteAccount`
-- `GET /api/productsList`
+Este workflow aplica al proyecto actual y cubre los endpoints:
+- `POST /signup`
+- `POST /login`
 
-El alcance cubre:
-- Diseno y automatizacion de escenarios funcionales
-- Validaciones de contrato (schema y campos clave)
-- Manejo de datos dinamicos para ejecuciones repetibles
-- Ejecucion desde runner centralizado y generacion de reportes
+Cobertura funcional implementada:
+- Crear un nuevo usuario en signup
+- Intentar crear un usuario ya existente
+- Login con usuario y password correcto
+- Login con usuario y password incorrecto
+
+Incluye ademas:
+- Manejo de datos dinamicos para evitar colisiones
+- Validaciones de status y mensajes de negocio
+- Ejecucion con Maven y Karate JUnit5
+- Generacion de reportes para analisis QA
 
 ### Tecnologias utilizadas
-- **Karate DSL (1.5.0):** definicion de escenarios API en Gherkin y validaciones declarativas
-- **Java (17):** soporte de ejecucion y runner JUnit 5
-- **Maven:** gestion de dependencias, build y ejecucion de pruebas
+- **Karate DSL (1.5.0):** escenarios API en Gherkin y validaciones declarativas
+- **Java (17):** runtime de pruebas y runner JUnit5
+- **Maven:** gestion de dependencias y ejecucion de suites
 
 ## 2. Metodologia de trabajo
 
 ### Enfoque de automatizacion
-Se utiliza un enfoque **API-first, modular y orientado a riesgo**, priorizando endpoints criticos y asegurando que cada prueba sea independiente, legible y mantenible.
+Se aplica un enfoque **API-first y orientado a riesgo** sobre autenticacion, priorizando escenarios criticos de alta frecuencia (registro e inicio de sesion).
 
-Principios del enfoque:
-- Casos de prueba alineados al contrato REST y reglas de negocio
-- Escenarios por comportamiento esperado, no por detalle tecnico
-- Reutilizacion de pasos comunes para minimizar duplicidad
-- Datos desacoplados de la logica de prueba
+Principios aplicados:
+- Escenarios por comportamiento de negocio
+- Independencia entre pruebas
+- Datos desacoplados de la logica
+- Reutilizacion de utilidades para mantenimiento simple
 
 ### Uso de IA (Copilot) en el flujo de trabajo
-Copilot se integra como acelerador de productividad en tareas controladas:
+La IA se usa para acelerar tareas repetitivas sin comprometer control de calidad:
 - Propuesta inicial de escenarios positivos y negativos
-- Sugerencias de aserciones `match` y estructuras de schema
-- Refactor de codigo repetido hacia `features/common` y `utils`
-- Redaccion tecnica de documentacion y convenciones
+- Asistencia en aserciones Karate (`match`, contains, tipos)
+- Refactor de reutilizacion en `utils` y estructura de `features`
+- Redaccion tecnica y estandarizacion documental
 
-Control de calidad:
-- Toda contribucion generada por IA requiere revision de QA Automation
-- No se acepta codigo sin validacion funcional local
-- Se registran ajustes manuales para trazabilidad
+Control QA:
+- Todo aporte generado con IA se revisa funcionalmente antes de merge
+- No se aprueba codigo sin ejecucion local de pruebas
+- Se documentan ajustes manuales relevantes
 
 ### Buenas practicas operativas
-- Definir criterios de aceptacion antes de automatizar
-- Mantener checklist de revision por Pull Request
-- Ejecutar smoke suite antes de integrar cambios
-- Documentar decisiones tecnicas del framework
+- Mantener trazabilidad: caso de prueba -> feature -> evidencia
+- Ejecutar smoke antes de integrar cambios
+- Revisar consistencia de mensajes de negocio esperados
+- Evitar hardcode de usuarios reutilizando generacion dinamica
 
 ## 3. Flujo de desarrollo (AI Workflow)
 
 ### Paso 1: Analisis del servicio REST
-- Revisar contrato del endpoint: metodo, path, headers, payload y respuestas
-- Identificar precondiciones, datos requeridos y dependencias
-- Definir criterios de exito y reglas de error esperadas
+- Revisar contrato de `signup` y `login` (payload y formato de respuesta)
+- Identificar criterios de exito y errores funcionales esperados
+- Confirmar comportamiento real del API (incluyendo respuestas con `status 200` en fallos de negocio)
 
 ### Paso 2: Identificacion de endpoints
-- Agrupar endpoints por dominio (`account`, `products`)
-- Clasificar criticidad (alta, media, baja)
-- Definir prioridad de automatizacion (smoke, regresion)
+- Clasificar endpoints en dominio de autenticacion
+- Definir prioridad de cobertura: registro y acceso
+- Delimitar dependencias entre escenarios
 
 ### Paso 3: Definicion de casos de prueba
-- Diseñar casos positivos (flujo valido de negocio)
-- Diseñar casos negativos (payload invalido, campos faltantes, metodo incorrecto)
-- Incluir casos de borde (valores limite, formato invalido)
+- Positivos:
+  - Alta de usuario nuevo
+  - Login con credenciales validas
+- Negativos:
+  - Alta de usuario duplicado
+  - Login con password incorrecto
 
 ### Paso 4: Diseno de escenarios en Gherkin
-- Crear features legibles en `src/test/resources/features`
-- Usar `Background` para configuracion comun
-- Mantener escenarios cortos, independientes y orientados a resultado
+- Implementar features en `src/test/resources/features`
+- Mantener steps legibles y orientados a validacion de negocio
+- Separar precondiciones en `Background`
 
 ### Paso 5: Implementacion en Karate
-- Externalizar payloads base en `src/test/resources/data`
-- Implementar utilidades de datos dinamicos en `src/test/resources/utils`
-- Reutilizar acciones comunes con `call read(...)` y tags en `features/common`
-- Validar status, body y contrato con `match`
+- Configurar base URL y headers en `src/test/java/karate-config.js`
+- Crear `signup.feature` y `login.feature` con requests JSON
+- Generar usuarios dinamicos con `src/test/resources/utils/user-generator.js`
+- Externalizar credenciales base en `src/test/resources/data/users.json`
+- Validar respuestas por `status`, token y mensajes de error/confirmacion
 
 ### Paso 6: Ejecucion de pruebas
-- Ejecutar la suite desde runner JUnit en `src/test/java/com/softka/runner/ApiTestRunner.java`
-- Seleccionar entorno con `karate-config.js` (`dev` o `qa`)
-- Analizar fallos por escenario y endpoint impactado
+- Orquestar la suite con `src/test/java/runners/TestRunner.java`
+- Ejecutar con Maven en entorno `qa` por defecto
+- Analizar fallos por escenario y tipo de validacion
 
 ### Paso 7: Generacion de reportes
-- Revisar reporte consolidado en `target/karate-reports/karate-summary.html`
-- Revisar detalle por feature para evidencia de defectos
-- Publicar resultados en pipeline y registrar hallazgos
+- Revisar `target/karate-reports/karate-summary.html`
+- Revisar detalle por feature para evidencia puntual
+- Complementar con `target/surefire-reports` para integracion CI
 
 ## 4. Estructura del proyecto
 
-Estructura recomendada para Karate en este proyecto:
+Estructura alineada al repositorio actual:
 
 ```text
 src/
   test/
     java/
       karate-config.js
-      com/softka/runners/
-        ApiTestRunner.java
+      runners/
+        TestRunner.java
     resources/
       features/
-        account/
-        products/
-        common/
+        signup.feature
+        login.feature
       data/
-        account/
-        schemas/
+        users.json
       utils/
+        user-generator.js
+AI_Protocol/
+  AI_Workflow.md
+README.md
+conclusiones.md
 ```
 
-Relacion con los componentes solicitados:
-- `src/test/java`: configuracion global y **runners**
-- `src/test/resources`: artefactos de pruebas
-- `features`: escenarios funcionales por dominio
-- `runners`: orquestacion de ejecucion de suites
-- `utils`: logica utilitaria para datos y reutilizacion
+Responsabilidades:
+- `src/test/java`: configuracion global y runner
+- `src/test/resources/features`: escenarios API en Gherkin
+- `src/test/resources/data`: datos de entrada reutilizables
+- `src/test/resources/utils`: funciones auxiliares y datos dinamicos
 
 ## 5. Estrategia de pruebas
 
 ### Tipos de pruebas
-- **Positivas:** validan respuestas esperadas con datos correctos
-- **Negativas:** validan robustez ante datos invalidos y errores funcionales
+- **Positivas:** validan flujos exitosos de signup y login
+- **Negativas:** validan mensajes funcionales para usuario existente y password incorrecto
 
 ### Validaciones de respuesta
-- Codigo HTTP esperado por operacion
-- Codigo funcional de respuesta (`responseCode`)
-- Mensaje funcional esperado (`created`, `updated`, `deleted`)
-- Contrato JSON con schema para listas de productos
+- `status 200` segun comportamiento actual del API
+- Mensajes de negocio esperados:
+  - `Sign up successful`
+  - `This user already exist`
+  - `Wrong password`
+- Presencia de `Auth_token` en login exitoso
 
 ### Manejo de datos dinamicos
-- Generacion de correo unico por ejecucion para evitar colisiones
-- Encadenamiento de datos entre escenarios (create -> update/delete)
-- Limpieza de datos para idempotencia de la suite
+- Username aleatorio por UUID para evitar colisiones
+- Reutilizacion controlada del mismo usuario para casos negativos de duplicidad
+- Separacion entre datos fijos (`users.json`) y datos generados (`user-generator.js`)
 
 ## 6. Integracion y ejecucion
 
@@ -142,32 +154,32 @@ Relacion con los componentes solicitados:
 
 ```bat
 mvn clean test
+mvn -Dtest=runners.TestRunner test
 mvn test -Dkarate.env=qa
 ```
 
 ### Uso de Gradle o Maven
-- **Maven:** herramienta activa del proyecto (configurada en `pom.xml`)
-- **Gradle:** opcion valida para otros contextos, no adoptada en este repositorio
+- **Maven:** herramienta activa y configurada en el proyecto
+- **Gradle:** opcion referencial, no configurada en esta base
 
 ### Generacion de reportes
-Al finalizar la ejecucion:
-- Karate genera reportes HTML y JSON en `target/karate-reports`
-- Surefire genera evidencia XML/TXT en `target/surefire-reports`
-- Estos artefactos se usan como evidencia en CI/CD
+Salida de ejecucion:
+- `target/karate-reports`: reportes funcionales HTML/JSON de Karate
+- `target/surefire-reports`: resultados JUnit/Surefire para CI
 
 ## 7. Buenas practicas
 
-- Reutilizar flujos comunes en `features/common` para evitar duplicidad
-- Separar datos de prueba en `data` y logica en `features`
-- Mantener escenarios legibles y con un solo objetivo de validacion
-- Evitar dependencias ocultas entre pruebas
-- Garantizar limpieza de datos para estabilidad en regresion
-- Versionar cambios con enfoque en impacto de calidad
+- Reutilizar utilidades para evitar duplicidad de steps
+- Mantener separados: features, datos y funciones auxiliares
+- Escribir escenarios cortos, legibles y con un objetivo claro
+- Validar contenido funcional ademas del status HTTP
+- Mantener convenciones de nombres consistentes por endpoint
+- Actualizar documentacion (`README.md` y `conclusiones.md`) con cada cambio relevante
 
 ## 8. Conclusion
 
-Este enfoque permite construir una automatizacion API robusta, mantenible y escalable para pruebas REST con Karate DSL en un contexto real de QA.
+El flujo actual permite una automatizacion robusta y mantenible para autenticacion REST en Demoblaze, con una estructura simple de escalar y facil de operar por el equipo QA.
 
-La combinacion de Karate, Java y Maven ofrece una base tecnica solida para integrarse a pipelines de entrega continua, mientras que el uso controlado de IA acelera la construccion de escenarios y la estandarizacion del framework sin perder calidad tecnica.
+La combinacion Karate + Java + Maven brinda ejecucion repetible y trazabilidad de resultados, mientras que el uso controlado de IA acelera la construccion de pruebas sin reemplazar la validacion tecnica experta.
 
-Como resultado, el equipo obtiene mayor cobertura en menos tiempo, defectos detectados de forma temprana y reportes accionables para desarrollo y negocio.
+Este AI Workflow queda alineado al proyecto vigente y sirve como guia operativa para evolucionar la cobertura de pruebas API en siguientes iteraciones.
