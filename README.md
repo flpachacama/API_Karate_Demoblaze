@@ -18,7 +18,7 @@ El proyecto utiliza datos dinamicos para generar usernames unicos y evitar confl
 
 ## Instalacion
 ```bat
-git clone <url-del-repo>
+git clone https://github.com/flpachacama/API_Karate_Demoblaze.git
 cd API_Karate_Demoblaze
 mvn -version
 ```
