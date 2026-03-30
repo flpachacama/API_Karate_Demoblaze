@@ -38,8 +38,8 @@ posthog.init('phc_M6fKk3dSX9HjglkqPSybauGas45NINb7EgsPGU8N9g1',{
       <img src="karate-labs-logo-ring.svg" alt="Karate Labs"/>
     </a>
     <div class="nav-count">
-      <div id="nav-pass" class="bg-success">0</div>
-      <div id="nav-fail" class="bg-danger">2</div>
+      <div id="nav-pass" class="bg-success">2</div>
+      <div id="nav-fail" class="bg-danger">0</div>
     </div>
   </div>
   <div id="nav-env">
@@ -49,16 +49,16 @@ posthog.init('phc_M6fKk3dSX9HjglkqPSybauGas45NINb7EgsPGU8N9g1',{
     <div>Scenarios</div>
   </div>
   <div id="nav-date">
-    <div>2026-03-30 09:32:53 a. m.</div>
+    <div>2026-03-30 09:42:53 a. m.</div>
   </div>
 </div>
 
         <div class="nav-container">
-          <div class="nav-item failed">
-            <a href="#[1:17]"><span>[1:17]</span> <span>Crear un nuevo usuario en signup</span></a>
+          <div class="nav-item passed">
+            <a href="#[1:23]"><span>[1:23]</span> <span>Crear un nuevo usuario en signup</span></a>
           </div>
-          <div class="nav-item failed">
-            <a href="#[2:26]"><span>[2:26]</span> <span>Intentar crear un usuario ya existente</span></a>
+          <div class="nav-item passed">
+            <a href="#[2:32]"><span>[2:32]</span> <span>Intentar crear un usuario ya existente</span></a>
           </div>
         </div>
       </div>
@@ -72,29 +72,29 @@ posthog.init('phc_M6fKk3dSX9HjglkqPSybauGas45NINb7EgsPGU8N9g1',{
           <span class="feature-description"></span>
         </div>
         <div class="scenario">
-          <div class="scenario-heading" id="[1:17]">
+          <div class="scenario-heading" id="[1:23]">
             <div class="heading-container">
               <div class="scenario-tags">
                 
               </div>
               <div class="scenario-keyword">
-                Scenario: <span>[1:17]</span>
+                Scenario: <span>[1:23]</span>
                 <span class="scenario-name">Crear un nuevo usuario en signup</span>
                 <span></span>
               </div>
             </div>
-            <div class="scenario-time failed">
-              <span>ms:</span>&nbsp;<span>1400</span>
+            <div class="scenario-time passed">
+              <span>ms:</span>&nbsp;<span>1827</span>
             </div>
           </div>
           <div class="step-row">
-            <div class="step-container" id="[1:17]bg">
+            <div class="step-container" id="[1:23]bg">
               <div class="step-ref bg-step">&gt;&gt;</div>
               <div class="step-cell passed">Background:</div>
             </div>
             <div class="time-cell passed"></div>
           </div>
-          <div data-parent="[1:17]bg"><div>
+          <div data-parent="[1:23]bg"><div>
   
 
   
@@ -107,7 +107,7 @@ posthog.init('phc_M6fKk3dSX9HjglkqPSybauGas45NINb7EgsPGU8N9g1',{
         <span>*</span>&nbsp;<span>def users = read(&#39;classpath:data/users.json&#39;)</span>
       </div>
     </div>
-    <div class="time-cell passed">52</div>
+    <div class="time-cell passed">53</div>
   </div>
 
    
@@ -122,7 +122,7 @@ posthog.init('phc_M6fKk3dSX9HjglkqPSybauGas45NINb7EgsPGU8N9g1',{
 
 </div>
 </div>
-          <div data-parent="[1:17]bg"><div>
+          <div data-parent="[1:23]bg"><div>
   
 
   
@@ -135,7 +135,7 @@ posthog.init('phc_M6fKk3dSX9HjglkqPSybauGas45NINb7EgsPGU8N9g1',{
         <span>*</span>&nbsp;<span>def userGenerator = call read(&#39;classpath:utils/user-generator.js&#39;)</span>
       </div>
     </div>
-    <div class="time-cell passed">22</div>
+    <div class="time-cell passed">23</div>
   </div>
 
    
@@ -150,7 +150,7 @@ posthog.init('phc_M6fKk3dSX9HjglkqPSybauGas45NINb7EgsPGU8N9g1',{
 
 </div>
 </div>
-          <div data-parent="[1:17]bg"><div>
+          <div data-parent="[1:23]bg"><div>
   
 
   
@@ -163,17 +163,23 @@ posthog.init('phc_M6fKk3dSX9HjglkqPSybauGas45NINb7EgsPGU8N9g1',{
         <span>*</span>&nbsp;<span>def extractMessage =</span>
       </div>
     </div>
-    <div class="time-cell passed">12</div>
+    <div class="time-cell passed">23</div>
   </div>
 
    
   
   <div class="preformatted" data-parent="0.6">function(res){
   if (res == null) return &#39;&#39;;
-  if (typeof res === &#39;string&#39;) return res;
-  if (res.errorMessage) return res.errorMessage;
-  if (res.message) return res.message;
-  return karate.pretty(res);
+  var out = &#39;&#39;;
+  if (typeof res === &#39;string&#39;) out = res;
+  else if (res.errorMessage) out = res.errorMessage;
+  else if (res.message) out = res.message;
+  else out = karate.pretty(res);
+  out = out.trim();
+  if (out.length &gt;= 2 &amp;&amp; out.charAt(0) == &#39;&quot;&#39; &amp;&amp; out.charAt(out.length - 1) == &#39;&quot;&#39;) {
+    out = out.substring(1, out.length - 1);
+  }
+  return out.trim();
 }</div>
 
   
@@ -190,14 +196,14 @@ posthog.init('phc_M6fKk3dSX9HjglkqPSybauGas45NINb7EgsPGU8N9g1',{
   
 
   <div class="step-row">
-    <div class="step-container" id="0.18">
-      <div class="step-ref passed">18</div>
+    <div class="step-container" id="0.24">
+      <div class="step-ref passed">24</div>
       
       <div class="step-cell passed">
         <span>*</span>&nbsp;<span>def signupUser = userGenerator.signupPayload(users.password)</span>
       </div>
     </div>
-    <div class="time-cell passed">115</div>
+    <div class="time-cell passed">150</div>
   </div>
 
    
@@ -218,14 +224,14 @@ posthog.init('phc_M6fKk3dSX9HjglkqPSybauGas45NINb7EgsPGU8N9g1',{
   
 
   <div class="step-row">
-    <div class="step-container" id="0.19">
-      <div class="step-ref passed">19</div>
+    <div class="step-container" id="0.25">
+      <div class="step-ref passed">25</div>
       
       <div class="step-cell passed">
         <span>Given</span>&nbsp;<span>url demoblazeBaseUrl + &#39;/signup&#39;</span>
       </div>
     </div>
-    <div class="time-cell passed">1</div>
+    <div class="time-cell passed">2</div>
   </div>
 
    
@@ -246,8 +252,8 @@ posthog.init('phc_M6fKk3dSX9HjglkqPSybauGas45NINb7EgsPGU8N9g1',{
   
 
   <div class="step-row">
-    <div class="step-container" id="0.20">
-      <div class="step-ref passed">20</div>
+    <div class="step-container" id="0.26">
+      <div class="step-ref passed">26</div>
       
       <div class="step-cell passed">
         <span>And</span>&nbsp;<span>request signupUser</span>
@@ -274,14 +280,14 @@ posthog.init('phc_M6fKk3dSX9HjglkqPSybauGas45NINb7EgsPGU8N9g1',{
   
 
   <div class="step-row">
-    <div class="step-container" id="0.21">
-      <div class="step-ref passed">21</div>
+    <div class="step-container" id="0.27">
+      <div class="step-ref passed">27</div>
       
       <div class="step-cell passed">
         <span>When</span>&nbsp;<span>method post</span>
       </div>
     </div>
-    <div class="time-cell passed">1187</div>
+    <div class="time-cell passed">1559</div>
   </div>
 
    
@@ -290,34 +296,25 @@ posthog.init('phc_M6fKk3dSX9HjglkqPSybauGas45NINb7EgsPGU8N9g1',{
 
   
 
-  <div class="preformatted" data-parent="0.21">09:32:52.516 request:
-1 &gt; POST https://www.demoblaze.com/signup
+  <div class="preformatted" data-parent="0.27">09:42:51.252 request:
+1 &gt; POST https://api.demoblaze.com/signup
 1 &gt; Accept: application/json
 1 &gt; Content-Type: application/json; charset=UTF-8
 1 &gt; Content-Length: 49
-1 &gt; Host: www.demoblaze.com
+1 &gt; Host: api.demoblaze.com
 1 &gt; Connection: Keep-Alive
 1 &gt; User-Agent: Apache-HttpClient/4.5.14 (Java/17.0.12)
 1 &gt; Accept-Encoding: gzip,deflate
-{&quot;username&quot;:&quot;qa_5118674354&quot;,&quot;password&quot;:&quot;test123&quot;}
+{&quot;username&quot;:&quot;qa_8126571250&quot;,&quot;password&quot;:&quot;test123&quot;}
 
-09:32:53.302 response time in milliseconds: 780
-1 &lt; 404
-1 &lt; x-cloud-trace-context: a515846162127cea6acf79265e35a576
-1 &lt; date: Mon, 30 Mar 2026 14:32:52 GMT
-1 &lt; content-type: text/html; charset=UTF-8
+09:42:52.241 response time in milliseconds: 979
+1 &lt; 200
+1 &lt; content-type: application/json
+1 &lt; x-cloud-trace-context: e44b7a98911a0e1103a656ef3d6c412d
+1 &lt; date: Mon, 30 Mar 2026 14:42:51 GMT
 1 &lt; server: Google Frontend
-1 &lt; Content-Length: 283
-
-&lt;html&gt;&lt;head&gt;
-&lt;meta http-equiv=&quot;content-type&quot; content=&quot;text/html;charset=utf-8&quot;&gt;
-&lt;title&gt;404 Not Found&lt;/title&gt;
-&lt;/head&gt;
-&lt;body text=#000000 bgcolor=#ffffff&gt;
-&lt;h1&gt;Error: Not Found&lt;/h1&gt;
-&lt;h2&gt;The requested URL &lt;code&gt;/signup&lt;/code&gt; was not found on this server.&lt;/h2&gt;
-&lt;h2&gt;&lt;/h2&gt;
-&lt;/body&gt;&lt;/html&gt;
+1 &lt; Content-Length: 3
+&quot;&quot;
 
 
 </div>   
@@ -332,57 +329,14 @@ posthog.init('phc_M6fKk3dSX9HjglkqPSybauGas45NINb7EgsPGU8N9g1',{
   
 
   <div class="step-row">
-    <div class="step-container" id="0.22">
-      <div class="step-ref failed">22</div>
+    <div class="step-container" id="0.28">
+      <div class="step-ref passed">28</div>
       
-      <div class="step-cell failed">
+      <div class="step-cell passed">
         <span>Then</span>&nbsp;<span>status 200</span>
       </div>
     </div>
-    <div class="time-cell failed">10</div>
-  </div>
-
-   
-  
-  
-
-  
-
-  <div class="preformatted" data-parent="0.22">09:32:53.319 classpath:features/signup.feature:22
-Then status 200
-status code was: 404, expected: 200, response time in milliseconds: 780, url: https://www.demoblaze.com/signup, response: 
-
-&lt;html&gt;&lt;head&gt;
-&lt;meta http-equiv=&quot;content-type&quot; content=&quot;text/html;charset=utf-8&quot;&gt;
-&lt;title&gt;404 Not Found&lt;/title&gt;
-&lt;/head&gt;
-&lt;body text=#000000 bgcolor=#ffffff&gt;
-&lt;h1&gt;Error: Not Found&lt;/h1&gt;
-&lt;h2&gt;The requested URL &lt;code&gt;/signup&lt;/code&gt; was not found on this server.&lt;/h2&gt;
-&lt;h2&gt;&lt;/h2&gt;
-&lt;/body&gt;&lt;/html&gt;
-
-classpath:features/signup.feature:22
-</div>   
-
-  
-
-</div>
-</div>
-          <div><div>
-  
-
-  
-
-  <div class="step-row">
-    <div class="step-container" id="0.23">
-      <div class="step-ref skipped">23</div>
-      
-      <div class="step-cell skipped">
-        <span>*</span>&nbsp;<span>def signupMessage = extractMessage(response)</span>
-      </div>
-    </div>
-    <div class="time-cell skipped">0</div>
+    <div class="time-cell passed">0</div>
   </div>
 
    
@@ -403,14 +357,42 @@ classpath:features/signup.feature:22
   
 
   <div class="step-row">
-    <div class="step-container" id="0.24">
-      <div class="step-ref skipped">24</div>
+    <div class="step-container" id="0.29">
+      <div class="step-ref passed">29</div>
       
-      <div class="step-cell skipped">
-        <span>And</span>&nbsp;<span>match signupMessage contains &#39;Sign up successful&#39;</span>
+      <div class="step-cell passed">
+        <span>*</span>&nbsp;<span>def signupMessage = extractMessage(response)</span>
       </div>
     </div>
-    <div class="time-cell skipped">0</div>
+    <div class="time-cell passed">12</div>
+  </div>
+
+   
+  
+  
+
+  
+
+     
+
+  
+
+</div>
+</div>
+          <div><div>
+  
+
+  
+
+  <div class="step-row">
+    <div class="step-container" id="0.30">
+      <div class="step-ref passed">30</div>
+      
+      <div class="step-cell passed">
+        <span>*</span>&nbsp;<span>assert signupMessage == &#39;&#39; || signupMessage.indexOf(&#39;Sign up successful&#39;) &gt; -1</span>
+      </div>
+    </div>
+    <div class="time-cell passed">5</div>
   </div>
 
    
@@ -427,29 +409,29 @@ classpath:features/signup.feature:22
 </div>
         </div>
         <div class="scenario">
-          <div class="scenario-heading" id="[2:26]">
+          <div class="scenario-heading" id="[2:32]">
             <div class="heading-container">
               <div class="scenario-tags">
                 
               </div>
               <div class="scenario-keyword">
-                Scenario: <span>[2:26]</span>
+                Scenario: <span>[2:32]</span>
                 <span class="scenario-name">Intentar crear un usuario ya existente</span>
                 <span></span>
               </div>
             </div>
-            <div class="scenario-time failed">
-              <span>ms:</span>&nbsp;<span>300</span>
+            <div class="scenario-time passed">
+              <span>ms:</span>&nbsp;<span>909</span>
             </div>
           </div>
           <div class="step-row">
-            <div class="step-container" id="[2:26]bg">
+            <div class="step-container" id="[2:32]bg">
               <div class="step-ref bg-step">&gt;&gt;</div>
               <div class="step-cell passed">Background:</div>
             </div>
             <div class="time-cell passed"></div>
           </div>
-          <div data-parent="[2:26]bg"><div>
+          <div data-parent="[2:32]bg"><div>
   
 
   
@@ -462,7 +444,7 @@ classpath:features/signup.feature:22
         <span>*</span>&nbsp;<span>def users = read(&#39;classpath:data/users.json&#39;)</span>
       </div>
     </div>
-    <div class="time-cell passed">9</div>
+    <div class="time-cell passed">6</div>
   </div>
 
    
@@ -477,7 +459,7 @@ classpath:features/signup.feature:22
 
 </div>
 </div>
-          <div data-parent="[2:26]bg"><div>
+          <div data-parent="[2:32]bg"><div>
   
 
   
@@ -490,7 +472,7 @@ classpath:features/signup.feature:22
         <span>*</span>&nbsp;<span>def userGenerator = call read(&#39;classpath:utils/user-generator.js&#39;)</span>
       </div>
     </div>
-    <div class="time-cell passed">13</div>
+    <div class="time-cell passed">19</div>
   </div>
 
    
@@ -505,7 +487,7 @@ classpath:features/signup.feature:22
 
 </div>
 </div>
-          <div data-parent="[2:26]bg"><div>
+          <div data-parent="[2:32]bg"><div>
   
 
   
@@ -518,17 +500,23 @@ classpath:features/signup.feature:22
         <span>*</span>&nbsp;<span>def extractMessage =</span>
       </div>
     </div>
-    <div class="time-cell passed">7</div>
+    <div class="time-cell passed">11</div>
   </div>
 
    
   
   <div class="preformatted" data-parent="0.6">function(res){
   if (res == null) return &#39;&#39;;
-  if (typeof res === &#39;string&#39;) return res;
-  if (res.errorMessage) return res.errorMessage;
-  if (res.message) return res.message;
-  return karate.pretty(res);
+  var out = &#39;&#39;;
+  if (typeof res === &#39;string&#39;) out = res;
+  else if (res.errorMessage) out = res.errorMessage;
+  else if (res.message) out = res.message;
+  else out = karate.pretty(res);
+  out = out.trim();
+  if (out.length &gt;= 2 &amp;&amp; out.charAt(0) == &#39;&quot;&#39; &amp;&amp; out.charAt(out.length - 1) == &#39;&quot;&#39;) {
+    out = out.substring(1, out.length - 1);
+  }
+  return out.trim();
 }</div>
 
   
@@ -545,8 +533,8 @@ classpath:features/signup.feature:22
   
 
   <div class="step-row">
-    <div class="step-container" id="0.27">
-      <div class="step-ref passed">27</div>
+    <div class="step-container" id="0.33">
+      <div class="step-ref passed">33</div>
       
       <div class="step-cell passed">
         <span>*</span>&nbsp;<span>def existingUser = userGenerator.signupPayload(users.password)</span>
@@ -573,199 +561,14 @@ classpath:features/signup.feature:22
   
 
   <div class="step-row">
-    <div class="step-container" id="0.29">
-      <div class="step-ref passed">29</div>
-      
-      <div class="step-cell passed">
-        <span>Given</span>&nbsp;<span>url demoblazeBaseUrl + &#39;/signup&#39;</span>
-      </div>
-    </div>
-    <div class="time-cell passed">1</div>
-  </div>
-
-   
-  
-  
-
-  
-
-     
-
-  
-
-</div>
-</div>
-          <div><div>
-  
-
-  
-
-  <div class="step-row">
-    <div class="step-container" id="0.30">
-      <div class="step-ref passed">30</div>
-      
-      <div class="step-cell passed">
-        <span>And</span>&nbsp;<span>request existingUser</span>
-      </div>
-    </div>
-    <div class="time-cell passed">1</div>
-  </div>
-
-   
-  
-  
-
-  
-
-     
-
-  
-
-</div>
-</div>
-          <div><div>
-  
-
-  
-
-  <div class="step-row">
-    <div class="step-container" id="0.31">
-      <div class="step-ref passed">31</div>
-      
-      <div class="step-cell passed">
-        <span>When</span>&nbsp;<span>method post</span>
-      </div>
-    </div>
-    <div class="time-cell passed">262</div>
-  </div>
-
-   
-  
-  
-
-  
-
-  <div class="preformatted" data-parent="0.31">09:32:53.444 request:
-1 &gt; POST https://www.demoblaze.com/signup
-1 &gt; Accept: application/json
-1 &gt; Content-Type: application/json; charset=UTF-8
-1 &gt; Content-Length: 49
-1 &gt; Host: www.demoblaze.com
-1 &gt; Connection: Keep-Alive
-1 &gt; User-Agent: Apache-HttpClient/4.5.14 (Java/17.0.12)
-1 &gt; Accept-Encoding: gzip,deflate
-{&quot;username&quot;:&quot;qa_899e1e924b&quot;,&quot;password&quot;:&quot;test123&quot;}
-
-09:32:53.702 response time in milliseconds: 257
-1 &lt; 404
-1 &lt; x-cloud-trace-context: f84d065a6a9c955521cadc8a8b225488
-1 &lt; date: Mon, 30 Mar 2026 14:32:52 GMT
-1 &lt; content-type: text/html; charset=UTF-8
-1 &lt; server: Google Frontend
-1 &lt; Content-Length: 283
-
-&lt;html&gt;&lt;head&gt;
-&lt;meta http-equiv=&quot;content-type&quot; content=&quot;text/html;charset=utf-8&quot;&gt;
-&lt;title&gt;404 Not Found&lt;/title&gt;
-&lt;/head&gt;
-&lt;body text=#000000 bgcolor=#ffffff&gt;
-&lt;h1&gt;Error: Not Found&lt;/h1&gt;
-&lt;h2&gt;The requested URL &lt;code&gt;/signup&lt;/code&gt; was not found on this server.&lt;/h2&gt;
-&lt;h2&gt;&lt;/h2&gt;
-&lt;/body&gt;&lt;/html&gt;
-
-
-</div>   
-
-  
-
-</div>
-</div>
-          <div><div>
-  
-
-  
-
-  <div class="step-row">
-    <div class="step-container" id="0.32">
-      <div class="step-ref failed">32</div>
-      
-      <div class="step-cell failed">
-        <span>Then</span>&nbsp;<span>status 200</span>
-      </div>
-    </div>
-    <div class="time-cell failed">0</div>
-  </div>
-
-   
-  
-  
-
-  
-
-  <div class="preformatted" data-parent="0.32">09:32:53.705 classpath:features/signup.feature:32
-Then status 200
-status code was: 404, expected: 200, response time in milliseconds: 257, url: https://www.demoblaze.com/signup, response: 
-
-&lt;html&gt;&lt;head&gt;
-&lt;meta http-equiv=&quot;content-type&quot; content=&quot;text/html;charset=utf-8&quot;&gt;
-&lt;title&gt;404 Not Found&lt;/title&gt;
-&lt;/head&gt;
-&lt;body text=#000000 bgcolor=#ffffff&gt;
-&lt;h1&gt;Error: Not Found&lt;/h1&gt;
-&lt;h2&gt;The requested URL &lt;code&gt;/signup&lt;/code&gt; was not found on this server.&lt;/h2&gt;
-&lt;h2&gt;&lt;/h2&gt;
-&lt;/body&gt;&lt;/html&gt;
-
-classpath:features/signup.feature:32
-</div>   
-
-  
-
-</div>
-</div>
-          <div><div>
-  
-
-  
-
-  <div class="step-row">
-    <div class="step-container" id="0.34">
-      <div class="step-ref skipped">34</div>
-      
-      <div class="step-cell skipped">
-        <span>Given</span>&nbsp;<span>url demoblazeBaseUrl + &#39;/signup&#39;</span>
-      </div>
-    </div>
-    <div class="time-cell skipped">0</div>
-  </div>
-
-   
-  
-  
-
-  
-
-     
-
-  
-
-</div>
-</div>
-          <div><div>
-  
-
-  
-
-  <div class="step-row">
     <div class="step-container" id="0.35">
-      <div class="step-ref skipped">35</div>
+      <div class="step-ref passed">35</div>
       
-      <div class="step-cell skipped">
-        <span>And</span>&nbsp;<span>request existingUser</span>
+      <div class="step-cell passed">
+        <span>Given</span>&nbsp;<span>url demoblazeBaseUrl + &#39;/signup&#39;</span>
       </div>
     </div>
-    <div class="time-cell skipped">0</div>
+    <div class="time-cell passed">2</div>
   </div>
 
    
@@ -787,13 +590,13 @@ classpath:features/signup.feature:32
 
   <div class="step-row">
     <div class="step-container" id="0.36">
-      <div class="step-ref skipped">36</div>
+      <div class="step-ref passed">36</div>
       
-      <div class="step-cell skipped">
-        <span>When</span>&nbsp;<span>method post</span>
+      <div class="step-cell passed">
+        <span>And</span>&nbsp;<span>request existingUser</span>
       </div>
     </div>
-    <div class="time-cell skipped">0</div>
+    <div class="time-cell passed">0</div>
   </div>
 
    
@@ -815,13 +618,13 @@ classpath:features/signup.feature:32
 
   <div class="step-row">
     <div class="step-container" id="0.37">
-      <div class="step-ref skipped">37</div>
+      <div class="step-ref passed">37</div>
       
-      <div class="step-cell skipped">
-        <span>Then</span>&nbsp;<span>status 200</span>
+      <div class="step-cell passed">
+        <span>When</span>&nbsp;<span>method post</span>
       </div>
     </div>
-    <div class="time-cell skipped">0</div>
+    <div class="time-cell passed">443</div>
   </div>
 
    
@@ -830,7 +633,28 @@ classpath:features/signup.feature:32
 
   
 
-     
+  <div class="preformatted" data-parent="0.37">09:42:52.361 request:
+1 &gt; POST https://api.demoblaze.com/signup
+1 &gt; Accept: application/json
+1 &gt; Content-Type: application/json; charset=UTF-8
+1 &gt; Content-Length: 49
+1 &gt; Host: api.demoblaze.com
+1 &gt; Connection: Keep-Alive
+1 &gt; User-Agent: Apache-HttpClient/4.5.14 (Java/17.0.12)
+1 &gt; Accept-Encoding: gzip,deflate
+{&quot;username&quot;:&quot;qa_218f740d74&quot;,&quot;password&quot;:&quot;test123&quot;}
+
+09:42:52.798 response time in milliseconds: 435
+1 &lt; 200
+1 &lt; content-type: application/json
+1 &lt; x-cloud-trace-context: cd30347219d7e4082f7a6e923c652729
+1 &lt; date: Mon, 30 Mar 2026 14:42:51 GMT
+1 &lt; server: Google Frontend
+1 &lt; Content-Length: 3
+&quot;&quot;
+
+
+</div>   
 
   
 
@@ -843,13 +667,13 @@ classpath:features/signup.feature:32
 
   <div class="step-row">
     <div class="step-container" id="0.38">
-      <div class="step-ref skipped">38</div>
+      <div class="step-ref passed">38</div>
       
-      <div class="step-cell skipped">
-        <span>*</span>&nbsp;<span>def duplicateMessage = extractMessage(response)</span>
+      <div class="step-cell passed">
+        <span>Then</span>&nbsp;<span>status 200</span>
       </div>
     </div>
-    <div class="time-cell skipped">0</div>
+    <div class="time-cell passed">0</div>
   </div>
 
    
@@ -870,14 +694,176 @@ classpath:features/signup.feature:32
   
 
   <div class="step-row">
-    <div class="step-container" id="0.39">
-      <div class="step-ref skipped">39</div>
+    <div class="step-container" id="0.40">
+      <div class="step-ref passed">40</div>
       
-      <div class="step-cell skipped">
+      <div class="step-cell passed">
+        <span>Given</span>&nbsp;<span>url demoblazeBaseUrl + &#39;/signup&#39;</span>
+      </div>
+    </div>
+    <div class="time-cell passed">1</div>
+  </div>
+
+   
+  
+  
+
+  
+
+     
+
+  
+
+</div>
+</div>
+          <div><div>
+  
+
+  
+
+  <div class="step-row">
+    <div class="step-container" id="0.41">
+      <div class="step-ref passed">41</div>
+      
+      <div class="step-cell passed">
+        <span>And</span>&nbsp;<span>request existingUser</span>
+      </div>
+    </div>
+    <div class="time-cell passed">1</div>
+  </div>
+
+   
+  
+  
+
+  
+
+     
+
+  
+
+</div>
+</div>
+          <div><div>
+  
+
+  
+
+  <div class="step-row">
+    <div class="step-container" id="0.42">
+      <div class="step-ref passed">42</div>
+      
+      <div class="step-cell passed">
+        <span>When</span>&nbsp;<span>method post</span>
+      </div>
+    </div>
+    <div class="time-cell passed">379</div>
+  </div>
+
+   
+  
+  
+
+  
+
+  <div class="preformatted" data-parent="0.42">09:42:52.803 request:
+2 &gt; POST https://api.demoblaze.com/signup
+2 &gt; Accept: application/json
+2 &gt; Content-Type: application/json; charset=UTF-8
+2 &gt; Content-Length: 49
+2 &gt; Host: api.demoblaze.com
+2 &gt; Connection: Keep-Alive
+2 &gt; User-Agent: Apache-HttpClient/4.5.14 (Java/17.0.12)
+2 &gt; Accept-Encoding: gzip,deflate
+{&quot;username&quot;:&quot;qa_218f740d74&quot;,&quot;password&quot;:&quot;test123&quot;}
+
+09:42:53.179 response time in milliseconds: 374
+2 &lt; 200
+2 &lt; content-type: application/json
+2 &lt; vary: Accept-Encoding
+2 &lt; x-cloud-trace-context: 7027e21531609d0b29d4ea66b2d938fa
+2 &lt; date: Mon, 30 Mar 2026 14:42:52 GMT
+2 &lt; server: Google Frontend
+2 &lt; Transfer-Encoding: chunked
+{&quot;errorMessage&quot;:&quot;This user already exist.&quot;}
+
+
+</div>   
+
+  
+
+</div>
+</div>
+          <div><div>
+  
+
+  
+
+  <div class="step-row">
+    <div class="step-container" id="0.43">
+      <div class="step-ref passed">43</div>
+      
+      <div class="step-cell passed">
+        <span>Then</span>&nbsp;<span>status 200</span>
+      </div>
+    </div>
+    <div class="time-cell passed">0</div>
+  </div>
+
+   
+  
+  
+
+  
+
+     
+
+  
+
+</div>
+</div>
+          <div><div>
+  
+
+  
+
+  <div class="step-row">
+    <div class="step-container" id="0.44">
+      <div class="step-ref passed">44</div>
+      
+      <div class="step-cell passed">
+        <span>*</span>&nbsp;<span>def duplicateMessage = extractMessage(response)</span>
+      </div>
+    </div>
+    <div class="time-cell passed">23</div>
+  </div>
+
+   
+  
+  
+
+  
+
+     
+
+  
+
+</div>
+</div>
+          <div><div>
+  
+
+  
+
+  <div class="step-row">
+    <div class="step-container" id="0.45">
+      <div class="step-ref passed">45</div>
+      
+      <div class="step-cell passed">
         <span>And</span>&nbsp;<span>match duplicateMessage contains &#39;This user already exist&#39;</span>
       </div>
     </div>
-    <div class="time-cell skipped">0</div>
+    <div class="time-cell passed">18</div>
   </div>
 
    

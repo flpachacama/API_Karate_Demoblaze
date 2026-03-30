@@ -7,10 +7,16 @@ Feature: Login API
       """
       function(res){
         if (res == null) return '';
-        if (typeof res === 'string') return res;
-        if (res.errorMessage) return res.errorMessage;
-        if (res.message) return res.message;
-        return karate.pretty(res);
+        var out = '';
+        if (typeof res === 'string') out = res;
+        else if (res.errorMessage) out = res.errorMessage;
+        else if (res.message) out = res.message;
+        else out = karate.pretty(res);
+        out = out.trim();
+        if (out.length >= 2 && out.charAt(0) == '"' && out.charAt(out.length - 1) == '"') {
+          out = out.substring(1, out.length - 1);
+        }
+        return out.trim();
       }
       """
 
@@ -26,8 +32,11 @@ Feature: Login API
     And request validUser
     When method post
     Then status 200
-    And match response contains { Auth_token: '#string' }
-    And match response.Auth_token == '#notnull'
+    * def loginMessage = extractMessage(response)
+    And match loginMessage contains 'Auth_token:'
+    * def token = loginMessage.replace('Auth_token:', '').trim()
+    And match token == '#string'
+    * assert token.length > 0
 
   Scenario: Login con usuario y password incorrecto
     * def knownUser = userGenerator.signupPayload(users.password)

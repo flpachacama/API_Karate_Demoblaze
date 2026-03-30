@@ -3,7 +3,7 @@ function fn() {
 
   var environments = {
     qa: {
-      demoblazeBaseUrl: 'https://www.demoblaze.com'
+      demoblazeBaseUrl: 'https://api.demoblaze.com'
     }
   };
 

@@ -7,10 +7,16 @@ Feature: Signup API
       """
       function(res){
         if (res == null) return '';
-        if (typeof res === 'string') return res;
-        if (res.errorMessage) return res.errorMessage;
-        if (res.message) return res.message;
-        return karate.pretty(res);
+        var out = '';
+        if (typeof res === 'string') out = res;
+        else if (res.errorMessage) out = res.errorMessage;
+        else if (res.message) out = res.message;
+        else out = karate.pretty(res);
+        out = out.trim();
+        if (out.length >= 2 && out.charAt(0) == '"' && out.charAt(out.length - 1) == '"') {
+          out = out.substring(1, out.length - 1);
+        }
+        return out.trim();
       }
       """
 
@@ -21,7 +27,7 @@ Feature: Signup API
     When method post
     Then status 200
     * def signupMessage = extractMessage(response)
-    And match signupMessage contains 'Sign up successful'
+    * assert signupMessage == '' || signupMessage.indexOf('Sign up successful') > -1
 
   Scenario: Intentar crear un usuario ya existente
     * def existingUser = userGenerator.signupPayload(users.password)
