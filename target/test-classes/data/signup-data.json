@@ -1,0 +1,14 @@
+[
+  {
+    "caseName": "usuario_nuevo",
+    "duplicate": false,
+    "allowEmptyResponse": true,
+    "expectedMessage": "Sign up successful"
+  },
+  {
+    "caseName": "usuario_duplicado",
+    "duplicate": true,
+    "allowEmptyResponse": false,
+    "expectedMessage": "This user already exist"
+  }
+]

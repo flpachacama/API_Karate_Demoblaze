@@ -1,0 +1,23 @@
+[
+  {
+    "caseName": "login_exitoso",
+    "preSignup": true,
+    "password": "test123",
+    "expectedMessage": "Auth_token:",
+    "expectsToken": true
+  },
+  {
+    "caseName": "password_incorrecto",
+    "preSignup": true,
+    "password": "test123_wrong",
+    "expectedMessage": "Wrong password",
+    "expectsToken": false
+  },
+  {
+    "caseName": "usuario_no_registrado",
+    "preSignup": false,
+    "password": "test123",
+    "expectedMessage": "User does not exist",
+    "expectsToken": false
+  }
+]

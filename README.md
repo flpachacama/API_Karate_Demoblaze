@@ -8,8 +8,12 @@ Este framework automatiza los siguientes escenarios:
 - Intentar crear un usuario ya existente
 - Login con usuario y password correcto
 - Login con usuario y password incorrecto
+- Login con usuario no registrado
 
-El proyecto utiliza datos dinamicos para generar usernames unicos y evitar conflictos entre ejecuciones.
+El proyecto aplica una estrategia data-driven declarativa:
+- `Scenario Outline` + `Examples` con datos externos JSON
+- Datos separados en `src/test/resources/data`
+- JS solo para generar usernames unicos cuando es necesario
 
 ## Requisitos
 - Java 17+
@@ -63,14 +67,26 @@ src/
       features/
         signup.feature
         login.feature
+        helpers/
+          create-user.feature
       data/
         users.json
+        signup-data.json
+        login-data.json
       utils/
         user-generator.js
 AI_Protocol/
   AI_Workflow.md
+  AI_Workflow_v2.md
 conclusiones.md
 ```
+
+## Casos y validaciones de negocio
+- Signup exitoso: `Sign up successful`
+- Signup duplicado: `This user already exist`
+- Login password incorrecto: `Wrong password`
+- Login usuario no registrado: `User does not exist`
+- Login exitoso: respuesta contiene `Auth_token:`
 
 ## Reportes
 Al finalizar la ejecucion, Karate y Surefire generan evidencias en:
